@@ -60,7 +60,10 @@ package worlds {
                 }
             }
 
-            add( new TurnManager(player, cam) );
+            var energyBar: EnergyBar = new EnergyBar(10, 360 - 26);
+            add(energyBar);
+            add( new TurnManager(player, cam, energyBar) );
+
         }
     }
 }

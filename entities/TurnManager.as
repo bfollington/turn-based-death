@@ -6,9 +6,15 @@ package entities {
     import data.MoveTypes;
     import data.Turn;
 
+    import entities.level.Enemy;
+
     import entities.level.Player;
 
+    import flash.events.Event;
+
     import flash.geom.Point;
+
+    import net.flashpunk.Entity;
 
     import net.flashpunk.utils.Input;
     import net.flashpunk.utils.Key;
@@ -26,12 +32,14 @@ package entities {
         private var renderer: TurnRenderer;
         private var position: Point;
         private var camera: Camera;
+        private var energyBar: EnergyBar;
 
-        public function TurnManager(player: Player, camera: Camera) {
+        public function TurnManager(player: Player, camera: Camera, energyBar: EnergyBar) {
             super(0, 0);
 
             this.player = player;
             this.camera = camera;
+            this.energyBar = energyBar;
             position = new Point();
             add( renderer = new TurnRenderer() );
         }
@@ -39,8 +47,30 @@ package entities {
         override public function added(): void {
             super.added();
 
-            currentTurn = new Turn();
+            newTurn();
+        }
+
+        public function newTurn(): void {
+            if (currentTurn) {
+                currentTurn.removeEventListener("PlaybackEnd", onPlaybackOver);
+            }
+
+            currentTurn = new Turn(energyBar);
+
+            currentTurn.addEventListener("PlaybackEnd", onPlaybackOver);
             renderer.setTurn(currentTurn);
+        }
+
+        private function onPlaybackStart(e: Event = null): void {
+            room.getMembersByClass(Enemy).doToEachObject(function(e: Enemy) {
+                e.startActivePhase();
+            });
+        }
+
+        private function onPlaybackOver(e: Event = null): void {
+            room.getMembersByClass(Enemy).doToEachObject(function(e: Enemy) {
+                e.endActivePhase();
+            });
         }
 
         override public function update(): void {
@@ -69,8 +99,12 @@ package entities {
             }
             
             if (Input.pressed(Key.ENTER)) {
+
+                onPlaybackStart();
+                
                 currentTurn.play(camera).then(function(): void {
                     trace("Turn OVER!");
+                    newTurn();
                 });
             }
         }

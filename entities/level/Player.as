@@ -15,7 +15,8 @@ package entities.level {
 
     public class Player extends VEntity implements IMoveTarget {
         public function Player(x: Number = 0, y: Number = 0) {
-            super(x, y, Image.createCircle(16, 0xFF0000), new Hitbox(32, 32));
+            super(x, y, Image.createCircle(16, 0xFF0000), new Hitbox(32, 32, -16, -16));
+            getImage().centerOrigin();
 
             type = "player";
         }
@@ -28,12 +29,18 @@ package entities.level {
 
             var enemy: Enemy = collide("enemy", x, y) as Enemy;
 
+            var me: Player = this;
+
+            getTweener().tween(getImage(), {scale: 2}, 0.1, Ease.quadOut)
+                .then(function(): void {
+                    getTweener().tween(me.getImage(), {scale: 1}, 0.1, Ease.quadOut);
+                });
+
             if (enemy) {
-                return enemy.damage(move.getData().damage);
-            } else {
-                return Wait.wait(0.5);
+                enemy.damage(move.getData().damage);
             }
 
+            return Wait.wait(0.2);
         }
 
         public function applyMove(move: Move): Promise {

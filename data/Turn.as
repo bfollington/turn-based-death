@@ -2,22 +2,31 @@
  * Created by Ben on 2/04/2016.
  */
 package data {
+    import flash.events.Event;
+    import flash.events.EventDispatcher;
+
     import volticpunk.entities.Camera;
     import volticpunk.util.Promise;
     import volticpunk.util.VectorUtil;
 
-    public class Turn {
+    public class Turn extends EventDispatcher {
 
         private var moves: Vector.<Move>;
         private var playbackCursor: int = 0;
         private var playbackPromise: Promise;
         private var camera: Camera;
 
-        public function Turn() {
+        private var energyBar: EnergyBar;
+
+        public function Turn(energyBar: EnergyBar) {
+            this.energyBar = energyBar;
+            energyBar.set(energyBar.getMax());
+
             moves = new <Move>[];
         }
 
         public function addMove(move: Move) {
+            energyBar.remove(move.getCost());
             moves.push(move);
         }
 
@@ -26,7 +35,18 @@ package data {
         }
 
         public function undo(): Move {
-            return moves.pop();
+
+            if (moves.length <= 0) return null;
+
+            var undone: Move = moves.pop();
+
+            energyBar.add(undone.getCost());
+
+            return undone;
+        }
+
+        private function onPlaybackEnd() {
+            this.dispatchEvent(new Event("PlaybackEnd"));
         }
 
         private function onNextMove() {
@@ -46,6 +66,7 @@ package data {
             moves[playbackCursor].apply().then(onNextMove);
 
             playbackPromise = new Promise();
+            playbackPromise.then(onPlaybackEnd);
 
             return playbackPromise;
         }
