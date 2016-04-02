@@ -13,27 +13,19 @@ package entities.level {
     import volticpunk.entities.VEntity;
     import volticpunk.util.Promise;
 
-    public class Player extends VEntity implements IMoveTarget {
-        public function Player(x: Number = 0, y: Number = 0) {
-            super(x, y, Image.createCircle(16, 0xFF0000), new Hitbox(32, 32));
+    public class Enemy extends VEntity implements IMoveTarget {
+        public function Enemy(x: Number = 0, y: Number = 0) {
+            super(x, y, Image.createCircle(16, 0x00FF00), new Hitbox(32, 32));
 
-            type = "player";
+            type = "enemy";
         }
 
         override public function update(): void {
             super.update();
         }
 
-        private function onAttack(move: Move): Promise {
-
-            var enemy: Enemy = collide("enemy", x, y) as Enemy;
-
-            if (enemy) {
-                return enemy.damage(move.getData().damage);
-            } else {
-                return Wait.wait(0.5);
-            }
-
+        public function damage(amount: Number): Promise {
+            return room.cam.screenshake(amount / 3, 0.2, true);
         }
 
         public function applyMove(move: Move): Promise {
@@ -43,7 +35,7 @@ package entities.level {
             }
 
             if (move.getType() == MoveTypes.ATTACK) {
-                return onAttack(move);
+                return Wait.wait(0.5);
             }
 
             var p = new Promise();

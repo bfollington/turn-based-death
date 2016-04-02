@@ -31,7 +31,7 @@
 		public static const FRAMERATE: uint = 30;
 
 		public function Main () {
-			super(C.WIDTH, C.HEIGHT, FRAMERATE, true);
+			super(C.WIDTH, C.HEIGHT, FRAMERATE, false);
 
             stage.frameRate = FRAMERATE;
 			stage.quality = StageQuality.LOW;

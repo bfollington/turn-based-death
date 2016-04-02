@@ -13,6 +13,8 @@ package entities {
     import net.flashpunk.utils.Input;
     import net.flashpunk.utils.Key;
 
+    import volticpunk.entities.Camera;
+
     import volticpunk.entities.Group;
 
     import volticpunk.entities.VEntity;
@@ -23,11 +25,13 @@ package entities {
         private var currentTurn: Turn;
         private var renderer: TurnRenderer;
         private var position: Point;
+        private var camera: Camera;
 
-        public function TurnManager(player: Player) {
+        public function TurnManager(player: Player, camera: Camera) {
             super(0, 0);
 
             this.player = player;
+            this.camera = camera;
             position = new Point();
             add( renderer = new TurnRenderer() );
         }
@@ -65,7 +69,7 @@ package entities {
             }
             
             if (Input.pressed(Key.ENTER)) {
-                currentTurn.play().then(function(): void {
+                currentTurn.play(camera).then(function(): void {
                     trace("Turn OVER!");
                 });
             }

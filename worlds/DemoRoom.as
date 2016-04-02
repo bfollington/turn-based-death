@@ -4,9 +4,13 @@
 package worlds {
     import entities.TurnManager;
     import entities.level.Block;
+    import entities.level.Enemy;
     import entities.level.Player;
 
+
     import net.flashpunk.graphics.Image;
+
+    import volticpunk.entities.Camera;
 
     import volticpunk.worlds.Room;
 
@@ -16,9 +20,9 @@ package worlds {
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
@@ -28,6 +32,9 @@ package worlds {
         public function DemoRoom(fadeIn: Boolean = false) {
             super(fadeIn);
             disableDarknessOverlay();
+
+            levelWidth = 640;
+            levelHeight = 360;
 
             addGraphic(Image.createCircle(32, 0xFFFFFF), 0, 600, 300);
         }
@@ -46,10 +53,14 @@ package worlds {
                     if (level[y][x] == 2) {
                         add( player = new Player(x * C.GRID, y * C.GRID) );
                     }
+
+                    if (level[y][x] == 3) {
+                        add( new Enemy(x * C.GRID, y * C.GRID) );
+                    }
                 }
             }
 
-            add( new TurnManager(player) );
+            add( new TurnManager(player, cam) );
         }
     }
 }
