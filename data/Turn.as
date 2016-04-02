@@ -7,7 +7,6 @@ package data {
 
     import volticpunk.entities.Camera;
     import volticpunk.util.Promise;
-    import volticpunk.util.VectorUtil;
 
     public class Turn extends EventDispatcher {
 
@@ -62,11 +61,18 @@ package data {
 
         public function play(camera: Camera): Promise {
             this.camera = camera;
-            playbackCursor = 0;
-            moves[playbackCursor].apply().then(onNextMove);
+
+            if (moves.length > 0) {
+                playbackCursor = 0;
+                moves[playbackCursor].apply().then(onNextMove);
+            }
 
             playbackPromise = new Promise();
             playbackPromise.then(onPlaybackEnd);
+
+            if (moves.length == 0) {
+                playbackPromise.resolve();
+            }
 
             return playbackPromise;
         }

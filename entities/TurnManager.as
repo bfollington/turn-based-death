@@ -99,7 +99,7 @@ package entities {
             }
             
             if (Input.pressed(Key.ENTER)) {
-
+                
                 onPlaybackStart();
                 
                 currentTurn.play(camera).then(function(): void {
