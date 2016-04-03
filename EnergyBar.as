@@ -29,15 +29,15 @@ package {
             return max;
         }
 
-        public function add(amount: Number) {
+        public function add(amount: Number): void {
             set(value + amount);
         }
 
-        public function remove(amount: Number) {
+        public function remove(amount: Number): void {
             set(value - amount);
         }
 
-        public function set(amount: Number) {
+        public function set(amount: Number): void {
             value = amount;
             getTweener().tween(this, {displayedValue: amount}, 0.5, Ease.quadOut);
         }

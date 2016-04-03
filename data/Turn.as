@@ -24,7 +24,7 @@ package data {
             moves = new <Move>[];
         }
 
-        public function addMove(move: Move) {
+        public function addMove(move: Move): void {
             energyBar.remove(move.getCost());
             moves.push(move);
         }
@@ -44,11 +44,11 @@ package data {
             return undone;
         }
 
-        private function onPlaybackEnd() {
+        private function onPlaybackEnd(): void {
             this.dispatchEvent(new Event("PlaybackEnd"));
         }
 
-        private function onNextMove() {
+        private function onNextMove(): void {
             playbackCursor++;
 
             if (playbackCursor < moves.length) {

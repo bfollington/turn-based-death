@@ -35,7 +35,7 @@ package entities {
             }
         }
 
-        public function setTurn(turn: Turn) {
+        public function setTurn(turn: Turn): void {
             this.turn = turn;
         }
 

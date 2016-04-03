@@ -53,7 +53,7 @@ package entities.level {
                 return onAttack(move);
             }
 
-            var p = new Promise();
+            var p: Promise = new Promise();
             p.resolve();
 
             return p;

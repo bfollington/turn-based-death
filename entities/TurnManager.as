@@ -62,13 +62,13 @@ package entities {
         }
 
         private function onPlaybackStart(e: Event = null): void {
-            room.getMembersByClass(Enemy).doToEachObject(function(e: Enemy) {
+            room.getMembersByClass(Enemy).doToEachObject(function(e: Enemy): void {
                 e.startActivePhase();
             });
         }
 
         private function onPlaybackOver(e: Event = null): void {
-            room.getMembersByClass(Enemy).doToEachObject(function(e: Enemy) {
+            room.getMembersByClass(Enemy).doToEachObject(function(e: Enemy): void {
                 e.endActivePhase();
             });
         }
@@ -99,7 +99,7 @@ package entities {
             }
             
             if (Input.pressed(Key.ENTER)) {
-                
+
                 onPlaybackStart();
                 
                 currentTurn.play(camera).then(function(): void {

@@ -51,7 +51,7 @@ package entities.level {
             var player: Player = room.getInstanceByClass(Player) as Player;
 
             if (!stunned) {
-                var angle =  FP.RAD * (FP.angle(x, y, player.x, player.y) + 180);
+                var angle: Number =  FP.RAD * (FP.angle(x, y, player.x, player.y) + 180);
                 getPlatformMovement().velocity.x = 1 * Math.cos(angle);
                 getPlatformMovement().velocity.y = 1 * Math.sin(angle);
             } else {
@@ -113,7 +113,7 @@ package entities.level {
                 return Wait.wait(0.5);
             }
 
-            var p = new Promise();
+            var p: Promise = new Promise();
             p.resolve();
 
             return p;

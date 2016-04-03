@@ -7,11 +7,6 @@ package worlds {
     import entities.level.Enemy;
     import entities.level.Player;
 
-
-    import net.flashpunk.graphics.Image;
-
-    import volticpunk.entities.Camera;
-
     import volticpunk.worlds.Room;
 
     public class DemoRoom extends Room {
